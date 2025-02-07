@@ -220,6 +220,10 @@ dialog[open]{
     border: 2px solid black;
 }
 
+dialog input.touched:invalid{
+    outline: 2px solid red;
+}
+
 dialog .buttons{
     display: flex;
     justify-content: space-evenly;
@@ -296,15 +300,16 @@ button.cancel{
     justify-content: space-evenly;
 }
 
-.display-resume .educations{
+.education-info, .experience-info{
     padding: 2.5rem;
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     color: black;
     gap: 1.2rem;
 }
 
-.display-resume .educations .title{
+.education-info .title,.experience-info .title{
     color: rgb(14, 55, 78); 
     font-weight: 800;
     font-size: 1.5rem;
@@ -320,6 +325,10 @@ button.cancel{
     gap: 2rem;
 }
 
+.education .date{
+    width: 25%;
+}
+
 .display-resume .details{
     display: flex;
     flex-direction: column;
@@ -327,4 +336,13 @@ button.cancel{
 
 .display-resume .education .school{
     font-weight: 800;
+}
+
+.educations>button, .experiences>button{
+    align-self: center;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 1.5rem;
 }

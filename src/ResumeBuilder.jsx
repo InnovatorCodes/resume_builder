@@ -8,14 +8,13 @@ import emailsvg from './assets/email.svg';
 import phonesvg from "./assets/phone.svg";
 import locationsvg from './assets/location.svg';
 
-function EditDetails({personalState,educationState}){
-
+function EditDetails({personalState,educationState,experienceState}){
     return(
         <div className="edit-details">
             <ResetOptions />
             <Personal personal={personalState[0]} setPersonal={personalState[1]}/>
             <Educations educations={educationState[0]} setEducations={educationState[1]} />
-            <Experiences />
+            <Experiences experiences={experienceState[0]} setExperiences={experienceState[1]} />
         </div>
     )
 }
@@ -74,24 +73,51 @@ function Educations({educations,setEducations}){
         setIsVisible(!isVisible);
     }
 
+    function addEducation(){
+        const editDialog=document.querySelector('dialog.edit-education');
+        editDialog.querySelector('#school').classList.remove('touched');
+        editDialog.querySelector('#degree').classList.remove('touched');
+        editDialog.querySelector('#start-date').classList.remove('touched');
+        editDialog.querySelector('#end-date').classList.remove('touched');
+        editDialog.querySelector('#school').value='';
+        editDialog.querySelector('#degree').value='';
+        editDialog.querySelector('#start-date').value='';
+        editDialog.querySelector('#end-date').value='';
+        editDialog.showModal();
+    }
+
     function editEducationDetails(index){
         editIndex=index; 
         const editDialog=document.querySelector('dialog.edit-education');
         editDialog.querySelector('#school').value=educations[index].school;
         editDialog.querySelector('#degree').value=educations[index].degree;
-        editDialog.querySelector('#startdate').value=educations[index].startdate;
-        editDialog.querySelector('#enddate').value=educations[index].enddate;
+        editDialog.querySelector('#start-date').value=educations[index].startdate;
+        editDialog.querySelector('#end-date').value=educations[index].enddate;
         editDialog.showModal();
     }
 
-    function saveNewEducation(){
-        let neweducations=[...educations];
+    function saveEducation(){
+        let newEducations=[...educations];
         const editDialog=document.querySelector('dialog.edit-education');
-        educations[editIndex].school=editDialog.querySelector('#school').value;
-        educations[editIndex].degree=editDialog.querySelector('#degree').value;
-        educations[editIndex].startdate=editDialog.querySelector('#startdate').value;
-        educations[editIndex].enddate=editDialog.querySelector('#enddate').value;
-        setEducations(neweducations)
+        editDialog.querySelector('#school').classList.add('touched');
+        editDialog.querySelector('#degree').classList.add('touched');
+        editDialog.querySelector('#start-date').classList.add('touched');
+        editDialog.querySelector('#end-date').classList.add('touched');
+        let school=editDialog.querySelector('#school').value;
+        let degree=editDialog.querySelector('#degree').value;
+        let startdate=editDialog.querySelector('#start-date').value
+        let enddate=editDialog.querySelector('#end-date').value;
+        if (school=='' || degree=='' || startdate=='' || enddate=='') return;
+        let newEducation={
+            school,
+            degree,
+            startdate,
+            enddate
+        }
+        if(editIndex!=null) newEducations[editIndex]=newEducation;
+        else newEducations.push(newEducation)
+        editIndex=null;
+        setEducations(newEducations)
     }
 
     function EditEducation(){
@@ -99,22 +125,22 @@ function Educations({educations,setEducations}){
             <dialog className="edit-education">
                 <h1>Edit Education</h1>
                 <div className="school">
-                    <label htmlFor="school">School</label>
-                    <input type="text" name="school" id="school" placeholder="John Doe" required />
+                    <label htmlFor="school">School (required)</label>
+                    <input type="text" name="school" id="school" required />
                 </div>
                 <div className="degree">
-                    <label htmlFor="emailid">Degree</label>
-                    <input type="text" name="degree" id="degree" placeholder="johndoe@abc.com" />
+                    <label htmlFor="degree">Degree (required)</label>
+                    <input type="text" name="degree" id="degree" required />
                 </div>
                 <div className="startdate">
-                    <label htmlFor="phone">Start Date</label>
-                    <input type="tel" name="startdate" id="startdate" placeholder="123456789" />
+                    <label htmlFor="startdate">Start Date (required)</label>
+                    <input type="tel" name="startdate" id="start-date" required />
                 </div>
                 <div className="enddate">
-                    <label htmlFor="enddate">End Date</label>
-                    <input type="text" name="enddate" id="enddate" placeholder="City, Country" />
+                    <label htmlFor="enddate">End Date (required)</label>
+                    <input type="text" name="enddate" id="end-date" required />
                 </div>
-                <div className="buttons"><button onClick={()=>document.querySelector('dialog.edit-education').close()} className="cancel">Cancel</button><button type="submit" onClick={saveNewEducation} className="save">Save</button></div>
+                <div className="buttons"><button onClick={()=>document.querySelector('dialog.edit-education').close()} className="cancel">Cancel</button><button type="submit" onClick={saveEducation} className="save">Save</button></div>
             </dialog>
         )
     }
@@ -128,25 +154,37 @@ function Educations({educations,setEducations}){
             <div className={isVisible? "educations expanded": "educations"}>
                 {isVisible && educationComponents}
             </div>
+            {isVisible && <button className="add-education" onClick={addEducation}>+ Add Education</button>}
             <EditEducation/>
         </div>
     )
 }
 
-function Experiences(){
+function Experiences({experiences,setExperiences}){
     const [visibility,setVisibility]=useState(false);
     let editIndex=null;
-    const [experiences,setExperiences]=useState([{company:"ABC",},{company:"def"}]);
     const experienceComponents=experiences.map((experience,index)=>
         <div className="experience" key={uuidv4()}>
             <div className="company">{experience.company}</div>
             <button><img src={editsvg} className="editbtn" alt="Edit Experience" onClick={()=>editExperienceDetails(index)} /></button>
-            <button><img src={deletesvg} className="deletebtn" alt="Delete Experience" /></button>
+            <button><img src={deletesvg} className="deletebtn" alt="Delete Experience" onClick={()=>removeExperience(index)} /></button>
         </div>
     )
+
     function changeVisibility(){
         setVisibility(!visibility);
     }
+
+    function addExperience(){
+        const editDialog=document.querySelector('dialog.edit-experience');
+        editDialog.querySelector('#company').value='';
+        editDialog.querySelector('#position').value='';
+        editDialog.querySelector('#description').value='';
+        editDialog.querySelector('#startdate').value='';
+        editDialog.querySelector('#enddate').value='';
+        editDialog.showModal();
+    }
+    
     function editExperienceDetails(index){
         editIndex=index; 
         const editDialog=document.querySelector('dialog.edit-experience');
@@ -158,14 +196,30 @@ function Experiences(){
         editDialog.showModal();
     }
 
-    function saveNewExperience(){
+    function saveExperience(){
+        const editDialog=document.querySelector('dialog.edit-experience');
         let newExperiences=[...experiences];
-        const editDialog=document.querySelector('dialog.edit-education');
-        experiences[editIndex].company=editDialog.querySelector('#company').value;
-        experiences[editIndex].position=editDialog.querySelector('#position').value;
-        experiences[editIndex].description=editDialog.querySelector('#description').value;
-        experiences[editIndex].startdate=editDialog.querySelector('#startdate').value;
-        experiences[editIndex].enddate=editDialog.querySelector('#enddate').value;
+        editDialog.querySelector('#company').classList.add('touched');
+        editDialog.querySelector('#position').classList.add('touched');
+        editDialog.querySelector('#description').classList.add('touched');
+        editDialog.querySelector('#startdate').classList.add('touched');
+        editDialog.querySelector('#enddate').classList.add('touched');
+        let company= editDialog.querySelector('#company').value;
+        let position= editDialog.querySelector('#position').value;
+        let description= editDialog.querySelector('#description').value;
+        let startdate= editDialog.querySelector('#startdate').value;
+        let enddate= editDialog.querySelector('#enddate').value
+        if(company=='' || position=='' || description=='' || startdate=='' || enddate=='') return;
+        let newExperience={
+            company,
+            position,
+            description,
+            startdate,
+            enddate
+        }
+        if(editIndex!=null) newExperiences[editIndex]=newExperience;
+        else newExperiences.push(newExperience);
+        editIndex=null;
         setExperiences(newExperiences)
     }
 
@@ -174,28 +228,34 @@ function Experiences(){
             <dialog className="edit-experience">
                 <h1>Edit Education</h1>
                 <div className="company">
-                    <label htmlFor="company">Company</label>
+                    <label htmlFor="company">Company (required)</label>
                     <input type="text" name="company" id="company" required />
                 </div>
                 <div className="position">
-                    <label htmlFor="position">Position</label>
-                    <input type="text" name="position" id="position" />
+                    <label htmlFor="position">Position (required)</label>
+                    <input type="text" name="position" id="position" required />
                 </div>
                 <div className="description">
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description">Description (required)</label>
                     <textarea name="description" id="description" />
                 </div>
                 <div className="startdate">
-                    <label htmlFor="startdate">Start Date</label>
-                    <input type="tel" name="startdate" id="startdate" />
+                    <label htmlFor="startdate">Start Date (required)</label>
+                    <input type="tel" name="startdate" id="startdate" required />
                 </div>
                 <div className="enddate">
-                    <label htmlFor="enddate">End Date</label>
-                    <input type="text" name="enddate" id="enddate" />
+                    <label htmlFor="enddate">End Date (required)</label>
+                    <input type="text" name="enddate" id="enddate" required />
                 </div>
-                <div className="buttons"><button onClick={()=>document.querySelector('dialog.edit-experience').close()} className="cancel">Cancel</button><button type="submit" onClick={()=>saveNewExperience()} className="save">Save</button></div>
+                <div className="buttons"><button onClick={()=>document.querySelector('dialog.edit-experience').close()} className="cancel">Cancel</button><button type="submit" onClick={()=>saveExperience()} className="save">Save</button></div>
             </dialog>
         )
+    }
+
+    function removeExperience(removeIndex){
+        let newExperiences=[...experiences];
+        newExperiences.splice(removeIndex,1);
+        setExperiences(newExperiences);
     }
 
     return(
@@ -207,13 +267,14 @@ function Experiences(){
             <div className={visibility?"experienceList expanded":"experienceList"}>
                 {visibility && experienceComponents}
             </div>
+            {visibility && <button className="add-experience" onClick={addExperience}>+ Add Experience</button>}
             <EditExperience />
         </div>
     )
 }
 
-function DisplayResume({personal,educations}){
-    const experienceComponents=educations.map((education)=>
+function DisplayResume({personal,educations,experiences}){
+    const educationComponents=educations.map((education)=>
     <div key={uuidv4()} className="education">
         <div className="date">{education.startdate} - {education.enddate}</div>
         <div className="details">
@@ -221,6 +282,16 @@ function DisplayResume({personal,educations}){
             <div className="degree">{education.degree}</div>
         </div>
     </div>)
+
+    const experienceComponents=experiences.map((experience)=>
+        <div key={uuidv4()} className="education">
+            <div className="date">{experience.startdate} - {experience.enddate}</div>
+            <div className="details">
+                <div className="school">{experience.company}</div>
+                <div className="degree">{experience.position}</div>
+                <div className="description">{experience.description}</div>
+            </div>
+        </div>)
 
     return(
         <div className="display-resume">
@@ -241,11 +312,11 @@ function DisplayResume({personal,educations}){
                     </div>}
                 </div>
             </div>
-            <div className="educations">
-                {experienceComponents.length>0 && <div className="title">Education</div>}
-                {experienceComponents.length>0 && experienceComponents}
+            <div className="education-info">
+                {educationComponents.length>0 && <div className="title">Education</div>}
+                {educationComponents.length>0 && educationComponents}
             </div>
-            <div className="experiences">
+            <div className="experience-info">
             {experienceComponents.length>0 && <div className="title"> Professional Experience</div>}
             {experienceComponents.length>0 && experienceComponents}
             </div>
@@ -258,10 +329,12 @@ function ResumeBuilder(){
     const [personal,setPersonal]=useState({name:"John Doe",email:"johndoe@abc.com",phone:"1234567890",address:"City, Country"});
     const [educations,setEducations]=useState([{school:"NCFE",degree:"Class 12",startdate:"03/2008",enddate:"03/2020"},
         {school:"VIT Vellore",degree:"BTech,CSE Core",startdate:"09/2022",enddate:"06/2026"}]);
+    const [experiences,setExperiences]=useState([{company:"ABC",position:"abc", description:"abc",startdate:"abc",enddate:"abc"},
+        {company:"def",position:"def",description:"def",startdate:"def",enddate:"def"}])
     return (
         <div className="resume-content">
-            <EditDetails personalState={[personal,setPersonal]} educationState={[educations,setEducations]}/>
-            <DisplayResume personal={personal} educations={educations} />
+            <EditDetails personalState={[personal,setPersonal]} educationState={[educations,setEducations]} experienceState={[experiences,setExperiences]} />
+            <DisplayResume personal={personal} educations={educations} experiences={experiences} />
         </div>
     )
 }
