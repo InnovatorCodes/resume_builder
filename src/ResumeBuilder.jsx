@@ -11,7 +11,7 @@ import locationsvg from './assets/location.svg';
 function EditDetails({personalState,educationState,experienceState}){
     return(
         <div className="edit-details">
-            <ResetOptions />
+            <ResetOptions setPersonal={personalState[1]} setEducations={educationState[1]} setExperiences={experienceState[1]} />
             <Personal personal={personalState[0]} setPersonal={personalState[1]}/>
             <Educations educations={educationState[0]} setEducations={educationState[1]} />
             <Experiences experiences={experienceState[0]} setExperiences={experienceState[1]} />
@@ -19,11 +19,28 @@ function EditDetails({personalState,educationState,experienceState}){
     )
 }
 
-function ResetOptions(){
+function ResetOptions({setPersonal,setEducations,setExperiences}){
+    function clearResume(){
+        setPersonal({});
+        setEducations([]);
+        setExperiences([]);
+    }
+
+    function loadExample(){
+        const examplePersonal={name:"John Doe",email:"johndoe@abc.com",phone:"1234567890",address:"City, Country"};
+        const exampleEducations= [{school:"ABC University",degree:"Example Degree 1",startdate:"01/2001",enddate:"02/2002"},
+            {school:"DEF University",degree:"Example Degree 2",startdate:"03/2003",enddate:"04/2004"}]
+        const exampleExperiences=[{company:"ABC Global",position:"Example Position 1", description:"abc",startdate:"05/2005",enddate:"06/2006"},
+            {company:"DEF Global",position:"Example Position 2",description:"def",startdate:"07/2007",enddate:"present"}];
+        setPersonal(examplePersonal);
+        setEducations(exampleEducations);
+        setExperiences(exampleExperiences);
+    }
+
     return(
         <div className="reset-options">
-            <button className="clear">Clear Resume</button>
-            <button className="load">Load Example</button>
+            <button className="clear" onClick={clearResume}>Clear Resume</button>
+            <button className="load" onClick={loadExample}>Load Example</button>
         </div>
     )
 }
@@ -66,7 +83,7 @@ function Educations({educations,setEducations}){
         <div className="education" key={uuidv4()}>
             <div className="school">{education.school}</div>
             <button><img src={editsvg} className="editbtn" alt="Edit Education" onClick={()=>editEducationDetails(index)} /></button>
-            <button><img src={deletesvg} className="deletebtn" alt="Delete Experience" /></button>
+            <button><img src={deletesvg} className="deletebtn" alt="Delete Experience" onClick={()=>removeEducation(index)} /></button>
         </div>
     )
     function changeVisibility(){
@@ -143,6 +160,12 @@ function Educations({educations,setEducations}){
                 <div className="buttons"><button onClick={()=>document.querySelector('dialog.edit-education').close()} className="cancel">Cancel</button><button type="submit" onClick={saveEducation} className="save">Save</button></div>
             </dialog>
         )
+    }
+
+    function removeEducation(removeIndex){
+        let newEducations=[...educations];
+        newEducations.splice(removeIndex,1);
+        setEducations(newEducations)
     }
 
     return(
@@ -327,10 +350,10 @@ function DisplayResume({personal,educations,experiences}){
 
 function ResumeBuilder(){
     const [personal,setPersonal]=useState({name:"John Doe",email:"johndoe@abc.com",phone:"1234567890",address:"City, Country"});
-    const [educations,setEducations]=useState([{school:"NCFE",degree:"Class 12",startdate:"03/2008",enddate:"03/2020"},
-        {school:"VIT Vellore",degree:"BTech,CSE Core",startdate:"09/2022",enddate:"06/2026"}]);
-    const [experiences,setExperiences]=useState([{company:"ABC",position:"abc", description:"abc",startdate:"abc",enddate:"abc"},
-        {company:"def",position:"def",description:"def",startdate:"def",enddate:"def"}])
+    const [educations,setEducations]=useState([{school:"ABC University",degree:"Example Degree 1",startdate:"01/2001",enddate:"02/2002"},
+        {school:"DEF University",degree:"Example Degree 2",startdate:"03/2003",enddate:"04/2004"}]);
+    const [experiences,setExperiences]=useState([{company:"ABC Global",position:"Example Position 1", description:"abc",startdate:"05/2005",enddate:"06/2006"},
+        {company:"DEF Global",position:"Example Position 2",description:"def",startdate:"07/2007",enddate:"present"}])
     return (
         <div className="resume-content">
             <EditDetails personalState={[personal,setPersonal]} educationState={[educations,setEducations]} experienceState={[experiences,setExperiences]} />
