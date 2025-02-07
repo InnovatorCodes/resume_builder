@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { v4 as uuidv4 } from 'uuid';
-import expandsvg from './assets/expand.svg'
-import editsvg from './assets/edit.svg';
-import deletesvg from './assets/delete.svg';
+import expandsvg from '../assets/expand.svg'
+import editsvg from '../assets/edit.svg';
+import deletesvg from '../assets/delete.svg';
 
 export default function Experiences({experiences,setExperiences}){
     const [visibility,setVisibility]=useState(false);
