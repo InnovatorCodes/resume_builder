@@ -355,10 +355,13 @@ function ResumeBuilder(){
     const [experiences,setExperiences]=useState([{company:"ABC Global",position:"Example Position 1", description:"abc",startdate:"05/2005",enddate:"06/2006"},
         {company:"DEF Global",position:"Example Position 2",description:"def",startdate:"07/2007",enddate:"present"}])
     return (
-        <div className="resume-content">
-            <EditDetails personalState={[personal,setPersonal]} educationState={[educations,setEducations]} experienceState={[experiences,setExperiences]} />
-            <DisplayResume personal={personal} educations={educations} experiences={experiences} />
-        </div>
+        <>
+            <div className="header">MakeMyResume</div>
+            <div className="resume-content">
+                <EditDetails personalState={[personal,setPersonal]} educationState={[educations,setEducations]} experienceState={[experiences,setExperiences]} />
+                <DisplayResume personal={personal} educations={educations} experiences={experiences} />
+            </div>
+        </>
     )
 }
 
