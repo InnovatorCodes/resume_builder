@@ -43,7 +43,8 @@ button {
 
 .resume-content {
   display: flex;
-  gap: 10%;
+  justify-content: space-between;
+  gap: 1vw;
 }
 
 .edit-details {
@@ -288,7 +289,7 @@ button.cancel {
   gap: 5%;
   align-items: center;
   background-color: rgb(14, 55, 78);
-  height: 20%;
+  min-height: 20%;
 }
 
 .display-resume .header > div {
@@ -369,4 +370,94 @@ button.cancel {
   padding: 0.5rem 1rem;
   border: 2px solid black;
   border-radius: 1.5rem;
+}
+
+@media (max-width: 1250px) {
+  .resume-content {
+    flex-direction: column;
+    gap: 2vh;
+  }
+
+  .personal input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 830px) {
+  .resume-content {
+    width: 90vw;
+  }
+  .edit-details,
+  .display-resume {
+    width: 100%;
+  }
+  .display-resume {
+    height: calc(29.7 / 21 * 90vw);
+  }
+}
+
+@media (max-width: 720px) {
+  #root > .header {
+    font-size: 10vw;
+  }
+  .reset-options button {
+    font-size: min(1rem, 4vw);
+  }
+  .edit-details .educations .title,
+  .edit-details .experiences .title {
+    font-size: min(0.9rem, 3vw);
+  }
+  .educations .title img,
+  .experiences .title img {
+    width: min(2.4rem, 10vw);
+  }
+  .educations > button,
+  .experiences > button {
+    font-size: min(1rem, 3vw);
+  }
+  .personal h1 {
+    font-size: max(1.2rem, 4vw);
+  }
+  .personal label,
+  .edit-education label,
+  .edit-experience label {
+    font-size: min(1rem, 4vw);
+  }
+  .personal input,
+  .edit-education input,
+  .edit-experience input,
+  .edit-experience textarea {
+    font-size: min(1.1rem, 5vw);
+  }
+  .display-resume .contact,
+  .display-resume {
+    font-size: 2vw;
+  }
+  .display-resume .name {
+    font-size: 6vw;
+  }
+  .display-resume .header img {
+    width: 3vw;
+  }
+  .display-resume .address img {
+    width: 3vw;
+  }
+  .display-resume .education-info,
+  .display-resume .experience-info {
+    padding: 5vw;
+  }
+  .edit-details .experience .company,
+  .edit-details .education .school {
+    font-size: min(1.2rem, 4vw);
+  }
+  .edit-details .education img,
+  .edit-details .experience img {
+    width: min(2rem, 6vw);
+  }
+  .display-resume .title {
+    font-size: 3vw;
+  }
+  .display-resume .education {
+    font-size: 2vw;
+  }
 }
