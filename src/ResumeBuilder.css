@@ -7,13 +7,16 @@
   box-sizing: border-box;
 }
 
-input{
+input {
   background-color: white;
   color: black;
 }
-label{
+label {
   background-color: white;
   color: black;
+}
+dialog {
+  background-color: white;
 }
 
 html {
@@ -324,12 +327,17 @@ button.cancel {
 .display-resume .name {
   font-size: 2.5rem;
   font-weight: 800;
+  color: white;
 }
 
 .display-resume .contact {
   display: flex;
   gap: 1.5rem;
   justify-content: space-evenly;
+}
+
+.display-resume .contact div{
+  color: white;
 }
 
 .education-info,
@@ -383,6 +391,13 @@ button.cancel {
 }
 
 @media (max-width: 1250px) {
+  dialog {
+    width: 90vw;
+  }
+  dialog.edit-education input,
+  dialog.edit-experience input {
+    width: 100%;
+  }
   .resume-content {
     flex-direction: column;
     gap: 2vh;
@@ -439,8 +454,7 @@ button.cancel {
   .edit-experience textarea {
     font-size: min(1.1rem, 5vw);
   }
-  .display-resume .contact,
-  .display-resume {
+  .display-resume .contact div {
     font-size: 2vw;
   }
   .display-resume .name {
