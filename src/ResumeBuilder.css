@@ -3,7 +3,17 @@
 * {
   margin: 0;
   padding: 0;
+  color: black;
   box-sizing: border-box;
+}
+
+input{
+  background-color: white;
+  color: black;
+}
+label{
+  background-color: white;
+  color: black;
 }
 
 html {
