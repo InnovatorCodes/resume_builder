@@ -10,18 +10,16 @@ export default function Experiences({ experiences, setExperiences }) {
   const experienceComponents = experiences.map((experience, index) => (
     <div className="experience" key={uuidv4()}>
       <div className="company">{experience.company}</div>
-      <button>
+      <button className="editbtn">
         <img
           src={editsvg}
-          className="editbtn"
           alt="Edit Experience"
           onClick={() => editExperienceDetails(index)}
         />
       </button>
-      <button>
+      <button className="deletebtn">
         <img
           src={deletesvg}
-          className="deletebtn"
           alt="Delete Experience"
           onClick={() => removeExperience(index)}
         />

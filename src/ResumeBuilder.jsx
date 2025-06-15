@@ -98,6 +98,10 @@ function ResetOptions({ setPersonal, setEducations, setExperiences }) {
       <button className="load" onClick={loadExample}>
         Load Example
       </button>
+      <button className="print"
+        onClick={() => window.print()}>
+        Print Resume
+      </button>
     </div>
   );
 }

@@ -126,6 +126,9 @@ button.clear {
 button.load {
   background-color: rgb(231, 231, 231);
 }
+button.print {
+  background-color: rgb(231, 231, 231);
+}
 
 .personal {
   display: flex;
@@ -164,6 +167,8 @@ button.load {
   font-size: 1.3rem;
   width: 100%;
   width: 30vw;
+  background-color: white;
+  resize: none;
 }
 
 .edit-details .educations,
@@ -407,6 +412,56 @@ button.cancel {
     width: 100%;
   }
 }
+
+/* ...existing code... */
+@media print {
+  @page {
+    margin: 0; /* Remove page margins */
+    size: A4 portrait;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .resume-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Optional: hide any unwanted elements */
+  header, footer, nav {
+    display: none;
+  }
+  .display-resume {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    z-index: 9999;
+    padding: 2rem;
+  }
+  .edit-details{
+    display: none !important;
+  }
+  .display-resume .header {
+    background-color: rgb(14, 55, 78) !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .display-resume .header * {
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  } 
+}
+/* ...existing code... */
 
 @media (max-width: 830px) {
   .resume-content {
