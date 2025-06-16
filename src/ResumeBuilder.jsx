@@ -114,7 +114,7 @@ function ResetOptions({
     const res = await fetch("/api/ai_enhance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ aboutMe, skills, experience }),
+      body: JSON.stringify({ resume:{aboutMe, skills, experience}}),
     });
     const data = await res.json();
     console.log(data);
