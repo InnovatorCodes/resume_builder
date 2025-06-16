@@ -7,14 +7,24 @@ import locationsvg from "./assets/location.svg";
 import Personal from "./components/Personal";
 import Educations from "./components/Education";
 import Experiences from "./components/Experience";
+import Skills from "./components/Skills";
 
-function EditDetails({ personalState, educationState, experienceState }) {
+function EditDetails({
+  personalState,
+  educationState,
+  experienceState,
+  skillsState,
+}) {
   return (
     <div className="edit-details">
       <ResetOptions
+        aboutMe={personalState[0].about}
+        skills={skillsState[0]}
+        experience={experienceState[0]}
         setPersonal={personalState[1]}
         setEducations={educationState[1]}
         setExperiences={experienceState[1]}
+        setSkills={skillsState[1]}
       />
       <Personal personal={personalState[0]} setPersonal={personalState[1]} />
       <Educations
@@ -25,11 +35,20 @@ function EditDetails({ personalState, educationState, experienceState }) {
         experiences={experienceState[0]}
         setExperiences={experienceState[1]}
       />
+      <Skills skills={skillsState[0]} setSkills={skillsState[1]} />
     </div>
   );
 }
 
-function ResetOptions({ setPersonal, setEducations, setExperiences }) {
+function ResetOptions({
+  aboutMe,
+  skills,
+  experience,
+  setPersonal,
+  setEducations,
+  setExperiences,
+  setSkills,
+}) {
   function clearResume() {
     document.querySelector(".clear").classList.add("animate");
     document
@@ -40,6 +59,7 @@ function ResetOptions({ setPersonal, setEducations, setExperiences }) {
     setPersonal({});
     setEducations([]);
     setExperiences([]);
+    setSkills([]);
   }
 
   function loadExample() {
@@ -54,6 +74,8 @@ function ResetOptions({ setPersonal, setEducations, setExperiences }) {
       email: "johndoe@abc.com",
       phone: "1234567890",
       address: "City, Country",
+      about:
+        "I am a motivated Computer Science student with a strong background in software development and a passion for building intuitive user experiences. With experience in JavaScript, React, and Node.js, I enjoy solving real-world problems through efficient and creative code. I thrive in collaborative environments and am always eager to learn and grow. My goal is to contribute meaningfully to impactful tech projects and become a full-stack developer.",
     };
     const exampleEducations = [
       {
@@ -71,23 +93,31 @@ function ResetOptions({ setPersonal, setEducations, setExperiences }) {
     ];
     const exampleExperiences = [
       {
-        company: "ABC Global",
-        position: "Example Position 1",
-        description: "abc",
-        startdate: "05/2005",
-        enddate: "06/2006",
+        title: "Software Engineering Intern",
+        description:
+          "Completed a 3-month internship at ABC Technologies (May 2024 – July 2024), where I contributed to building scalable web applications using React, Node.js, and MongoDB. Developed dynamic UI components, collaborated in Agile sprints, and optimized backend APIs, resulting in a 30% improvement in load time.",
       },
       {
-        company: "DEF Global",
-        position: "Example Position 2",
-        description: "def",
-        startdate: "07/2007",
-        enddate: "present",
+        title: "Machine Learning Research Assistant",
+        description:
+          "Worked as a research assistant at DEF University (Jan 2024 – Apr 2024), focusing on developing deep learning models for image classification using TensorFlow. Handled data preprocessing, model training, and evaluation, leading to a 15% increase in prediction accuracy for the published prototype.",
       },
     ];
+    const exampleSkills = ["JavaScript", "React", "CSS"];
     setPersonal(examplePersonal);
     setEducations(exampleEducations);
     setExperiences(exampleExperiences);
+    setSkills(exampleSkills);
+  }
+
+  async function aiEnhance() {
+    const res = await fetch("/api/ai_enhance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ aboutMe, skills, experience }),
+    });
+    const data = await res.json();
+    console.log(data);
   }
 
   return (
@@ -98,15 +128,17 @@ function ResetOptions({ setPersonal, setEducations, setExperiences }) {
       <button className="load" onClick={loadExample}>
         Load Example
       </button>
-      <button className="print"
-        onClick={() => window.print()}>
+      <button className="print" onClick={() => window.print()}>
         Print Resume
+      </button>
+      <button className="ai" onClick={aiEnhance}>
+        Enhance with AI
       </button>
     </div>
   );
 }
 
-function DisplayResume({ personal, educations, experiences }) {
+function DisplayResume({ personal, educations, experiences, skills }) {
   const educationComponents = educations.map((education) => (
     <div key={uuidv4()} className="education">
       <div className="date">
@@ -120,15 +152,11 @@ function DisplayResume({ personal, educations, experiences }) {
   ));
 
   const experienceComponents = experiences.map((experience) => (
-    <div key={uuidv4()} className="education">
-      <div className="date">
-        {experience.startdate} - {experience.enddate}
-      </div>
-      <div className="details">
-        <div className="school">{experience.company}</div>
-        <div className="degree">{experience.position}</div>
-        <div className="description">{experience.description}</div>
-      </div>
+    <div key={uuidv4()} className="experience">
+      <p>
+        <span>{experience.title + ": "}</span>
+        {experience.description}
+      </p>
     </div>
   ));
 
@@ -157,15 +185,55 @@ function DisplayResume({ personal, educations, experiences }) {
           )}
         </div>
       </div>
-      <div className="education-info">
-        {educationComponents.length > 0 && (
-          <div className="title">Education</div>
+      <div className="about-me">
+        {personal.about && (
+          <div className="about">
+            <div className="title">About Me</div>
+            <p>{personal.about}</p>
+          </div>
         )}
-        {educationComponents.length > 0 && educationComponents}
+      </div>
+      <div className="skills-education">
+        <div className="skills-info">
+          {skills && skills.length > 0 && (
+            <>
+              <div className="title">Skills</div>
+              <ul
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "0.7rem",
+                  marginTop: "1rem",
+                }}
+              >
+                {skills.map((skill) => (
+                  <li
+                    key={skill}
+                    style={{
+                      background: "#eee",
+                      color: "#222",
+                      padding: "0.4rem 0.8rem",
+                      borderRadius: "1rem",
+                      listStyle: "none",
+                    }}
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+        <div className="education-info">
+          {educationComponents.length > 0 && (
+            <div className="title">Education</div>
+          )}
+          {educationComponents.length > 0 && educationComponents}
+        </div>
       </div>
       <div className="experience-info">
         {experienceComponents.length > 0 && (
-          <div className="title"> Professional Experience</div>
+          <div className="title">Experience</div>
         )}
         {experienceComponents.length > 0 && experienceComponents}
       </div>
@@ -179,6 +247,8 @@ function ResumeBuilder() {
     email: "johndoe@abc.com",
     phone: "1234567890",
     address: "City, Country",
+    about:
+      "I am a motivated Computer Science student with a strong background in software development and a passion for building intuitive user experiences. With experience in JavaScript, React, and Node.js, I enjoy solving real-world problems through efficient and creative code. I thrive in collaborative environments and am always eager to learn and grow. My goal is to contribute meaningfully to impactful tech projects and become a full-stack developer.",
   });
   const [educations, setEducations] = useState([
     {
@@ -196,20 +266,17 @@ function ResumeBuilder() {
   ]);
   const [experiences, setExperiences] = useState([
     {
-      company: "ABC Global",
-      position: "Example Position 1",
-      description: "abc",
-      startdate: "05/2005",
-      enddate: "06/2006",
+      title: "Software Engineering Intern",
+      description:
+        "Completed a 3-month internship at ABC Technologies (May 2024 – July 2024), where I contributed to building scalable web applications using React, Node.js, and MongoDB. Developed dynamic UI components, collaborated in Agile sprints, and optimized backend APIs, resulting in a 30% improvement in load time.",
     },
     {
-      company: "DEF Global",
-      position: "Example Position 2",
-      description: "def",
-      startdate: "07/2007",
-      enddate: "present",
+      title: "Machine Learning Research Assistant",
+      description:
+        "Worked as a research assistant at DEF University (Jan 2024 – Apr 2024), focusing on developing deep learning models for image classification using TensorFlow. Handled data preprocessing, model training, and evaluation, leading to a 15% increase in prediction accuracy for the published prototype.",
     },
   ]);
+  const [skills, setSkills] = useState(["JavaScript", "React", "CSS"]);
   return (
     <>
       <div className="header">MakeMyResume</div>
@@ -218,11 +285,13 @@ function ResumeBuilder() {
           personalState={[personal, setPersonal]}
           educationState={[educations, setEducations]}
           experienceState={[experiences, setExperiences]}
+          skillsState={[skills, setSkills]}
         />
         <DisplayResume
           personal={personal}
           educations={educations}
           experiences={experiences}
+          skills={skills}
         />
       </div>
     </>

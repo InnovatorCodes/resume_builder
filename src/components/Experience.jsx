@@ -9,7 +9,7 @@ export default function Experiences({ experiences, setExperiences }) {
   let editIndex = null;
   const experienceComponents = experiences.map((experience, index) => (
     <div className="experience" key={uuidv4()}>
-      <div className="company">{experience.company}</div>
+      <div className="title">{experience.title}</div>
       <button className="editbtn">
         <img
           src={editsvg}
@@ -32,54 +32,33 @@ export default function Experiences({ experiences, setExperiences }) {
   }
 
   function addExperience() {
+    editIndex = null;
     const editDialog = document.querySelector("dialog.edit-experience");
-    editDialog.querySelector("#company").value = "";
-    editDialog.querySelector("#position").value = "";
+    editDialog.querySelector("#title").value = "";
     editDialog.querySelector("#description").value = "";
-    editDialog.querySelector("#startdate").value = "";
-    editDialog.querySelector("#enddate").value = "";
     editDialog.showModal();
   }
 
   function editExperienceDetails(index) {
     editIndex = index;
     const editDialog = document.querySelector("dialog.edit-experience");
-    editDialog.querySelector("#company").value = experiences[index].company;
-    editDialog.querySelector("#position").value = experiences[index].position;
+    editDialog.querySelector("#title").value = experiences[index].title;
     editDialog.querySelector("#description").value =
       experiences[index].description;
-    editDialog.querySelector("#startdate").value = experiences[index].startdate;
-    editDialog.querySelector("#enddate").value = experiences[index].enddate;
     editDialog.showModal();
   }
 
   function saveExperience() {
     const editDialog = document.querySelector("dialog.edit-experience");
     let newExperiences = [...experiences];
-    editDialog.querySelector("#company").classList.add("touched");
-    editDialog.querySelector("#position").classList.add("touched");
+    editDialog.querySelector("#title").classList.add("touched");
     editDialog.querySelector("#description").classList.add("touched");
-    editDialog.querySelector("#startdate").classList.add("touched");
-    editDialog.querySelector("#enddate").classList.add("touched");
-    let company = editDialog.querySelector("#company").value;
-    let position = editDialog.querySelector("#position").value;
+    let title = editDialog.querySelector("#title").value;
     let description = editDialog.querySelector("#description").value;
-    let startdate = editDialog.querySelector("#startdate").value;
-    let enddate = editDialog.querySelector("#enddate").value;
-    if (
-      company == "" ||
-      position == "" ||
-      description == "" ||
-      startdate == "" ||
-      enddate == ""
-    )
-      return;
+    if (title == "" || description == "") return;
     let newExperience = {
-      company,
-      position,
+      title,
       description,
-      startdate,
-      enddate,
     };
     if (editIndex != null) newExperiences[editIndex] = newExperience;
     else newExperiences.push(newExperience);
@@ -90,32 +69,21 @@ export default function Experiences({ experiences, setExperiences }) {
   function EditExperience() {
     return (
       <dialog className="edit-experience">
-        <h1>Edit Education</h1>
-        <div className="company">
-          <label htmlFor="company">Company (required)</label>
-          <input type="text" name="company" id="company" required />
-        </div>
-        <div className="position">
-          <label htmlFor="position">Position (required)</label>
-          <input type="text" name="position" id="position" required />
+        <h1>Edit Experience</h1>
+        <div className="title">
+          <label htmlFor="title">Title (required)</label>
+          <input type="text" name="title" id="title" required />
         </div>
         <div className="description">
           <label htmlFor="description">Description (required)</label>
           <textarea name="description" id="description" />
         </div>
-        <div className="startdate">
-          <label htmlFor="startdate">Start Date (required)</label>
-          <input type="tel" name="startdate" id="startdate" required />
-        </div>
-        <div className="enddate">
-          <label htmlFor="enddate">End Date (required)</label>
-          <input type="text" name="enddate" id="enddate" required />
-        </div>
         <div className="buttons">
           <button
-            onClick={() =>
-              document.querySelector("dialog.edit-experience").close()
-            }
+            onClick={() => {
+              editIndex = null;
+              document.querySelector("dialog.edit-experience").close();
+            }}
             className="cancel"
           >
             Cancel

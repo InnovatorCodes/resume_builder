@@ -91,11 +91,11 @@ export default function Educations({ educations, setEducations }) {
           <input type="text" name="degree" id="degree" required />
         </div>
         <div className="startdate">
-          <label htmlFor="startdate">Start Date (required)</label>
+          <label htmlFor="start-date">Start Date (required)</label>
           <input type="tel" name="startdate" id="start-date" required />
         </div>
         <div className="enddate">
-          <label htmlFor="enddate">End Date (required)</label>
+          <label htmlFor="end-date">End Date (required)</label>
           <input type="text" name="enddate" id="end-date" required />
         </div>
         <div className="buttons">

@@ -7,7 +7,9 @@ export default function Personal({ personal, setPersonal }) {
       setPersonal({ ...personal, email: target.value });
     else if (target.id == "phone")
       setPersonal({ ...personal, phone: target.value });
-    else setPersonal({ ...personal, address: target.value });
+    else if (target.id == "address")
+      setPersonal({ ...personal, address: target.value });
+    else setPersonal({ ...personal, about: target.value });
   }
   return (
     <div className="personal">
@@ -52,6 +54,15 @@ export default function Personal({ personal, setPersonal }) {
           placeholder="City, Country"
           onChange={handleChange}
         />
+      </div>
+      <div className="about">
+        <label htmlFor="about">About Yourself</label>
+        <textarea
+          name="about"
+          id="about"
+          placeholder="Type a few lines describing yourself..."
+          onChange={handleChange}
+        ></textarea>
       </div>
     </div>
   );
