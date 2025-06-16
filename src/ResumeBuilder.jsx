@@ -111,7 +111,7 @@ function ResetOptions({
   }
 
   async function aiEnhance() {
-    const res = await fetch("/api/ai_enhance", {
+    const res = await fetch('/api/enhance', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ resume:{aboutMe, skills, experience}}),
