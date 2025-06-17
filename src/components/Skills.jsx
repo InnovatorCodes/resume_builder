@@ -1,5 +1,5 @@
 import { useState } from "react";
-import addsvg from "../assets/add.svg";
+import addsvg from "/add.svg";
 
 function Skills({ skills, setSkills }) {
   const [input, setInput] = useState("");

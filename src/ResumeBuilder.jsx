@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./ResumeBuilder.css";
 import { v4 as uuidv4 } from "uuid";
-import emailsvg from "./assets/email.svg";
-import phonesvg from "./assets/phone.svg";
-import locationsvg from "./assets/location.svg";
+import emailsvg from "/email.svg";
+import phonesvg from "/phone.svg";
+import locationsvg from "/location.svg";
 import Personal from "./components/Personal";
 import Educations from "./components/Education";
 import Experiences from "./components/Experience";
@@ -36,8 +36,8 @@ function EditDetails({
         skills={skillsState[0]}
         comments={comments}
         setComments={setComments}
-        setAIContent = {setAIContent}
-        setAIModalOpen = {setAIModalOpen}
+        setAIContent={setAIContent}
+        setAIModalOpen={setAIModalOpen}
         loading={false}
       />
       <Personal personal={personalState[0]} setPersonal={personalState[1]} />
@@ -294,7 +294,15 @@ function ResumeBuilder() {
           skills={skills}
         />
       </div>
-      <AIModal open={aiModalOpen} onClose={() => setAIModalOpen(false)} content={aiContent} setPersonal={setPersonal} setEducations={setEducations} setExperiences={setExperiences} setSkills={setSkills} />
+      <AIModal
+        open={aiModalOpen}
+        onClose={() => setAIModalOpen(false)}
+        content={aiContent}
+        setPersonal={setPersonal}
+        setEducations={setEducations}
+        setExperiences={setExperiences}
+        setSkills={setSkills}
+      />
     </>
   );
 }

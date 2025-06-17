@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import expandsvg from "../assets/expand.svg";
-import editsvg from "../assets/edit.svg";
-import deletesvg from "../assets/delete.svg";
+import expandsvg from "/expand.svg";
+import editsvg from "/edit.svg";
+import deletesvg from "/delete.svg";
 
 export default function Educations({ educations, setEducations }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,7 +32,7 @@ export default function Educations({ educations, setEducations }) {
 
   function addEducation() {
     const editDialog = document.querySelector("dialog.edit-education");
-    editDialog.querySelector('h1').textContent = "Add Education";
+    editDialog.querySelector("h1").textContent = "Add Education";
     editDialog.querySelector("#school").classList.remove("touched");
     editDialog.querySelector("#degree").classList.remove("touched");
     editDialog.querySelector("#start-date").classList.remove("touched");
@@ -47,7 +47,7 @@ export default function Educations({ educations, setEducations }) {
   function editEducationDetails(index) {
     editIndex = index;
     const editDialog = document.querySelector("dialog.edit-education");
-    editDialog.querySelector('h1').textContent = "Edit Education";
+    editDialog.querySelector("h1").textContent = "Edit Education";
     editDialog.querySelector("#school").value = educations[index].school;
     editDialog.querySelector("#degree").value = educations[index].degree;
     editDialog.querySelector("#start-date").value = educations[index].startdate;
