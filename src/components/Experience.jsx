@@ -34,6 +34,9 @@ export default function Experiences({ experiences, setExperiences }) {
   function addExperience() {
     editIndex = null;
     const editDialog = document.querySelector("dialog.edit-experience");
+    editDialog.querySelector('h1').textContent = "Add Experience";
+    editDialog.querySelector("#title").classList.remove("touched");
+    editDialog.querySelector("#description").classList.remove("touched");
     editDialog.querySelector("#title").value = "";
     editDialog.querySelector("#description").value = "";
     editDialog.showModal();
@@ -42,6 +45,7 @@ export default function Experiences({ experiences, setExperiences }) {
   function editExperienceDetails(index) {
     editIndex = index;
     const editDialog = document.querySelector("dialog.edit-experience");
+    editDialog.querySelector('h1').textContent = "Edit Experience";
     editDialog.querySelector("#title").value = experiences[index].title;
     editDialog.querySelector("#description").value =
       experiences[index].description;

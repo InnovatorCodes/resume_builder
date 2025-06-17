@@ -32,6 +32,7 @@ export default function Educations({ educations, setEducations }) {
 
   function addEducation() {
     const editDialog = document.querySelector("dialog.edit-education");
+    editDialog.querySelector('h1').textContent = "Add Education";
     editDialog.querySelector("#school").classList.remove("touched");
     editDialog.querySelector("#degree").classList.remove("touched");
     editDialog.querySelector("#start-date").classList.remove("touched");
@@ -46,6 +47,7 @@ export default function Educations({ educations, setEducations }) {
   function editEducationDetails(index) {
     editIndex = index;
     const editDialog = document.querySelector("dialog.edit-education");
+    editDialog.querySelector('h1').textContent = "Edit Education";
     editDialog.querySelector("#school").value = educations[index].school;
     editDialog.querySelector("#degree").value = educations[index].degree;
     editDialog.querySelector("#start-date").value = educations[index].startdate;

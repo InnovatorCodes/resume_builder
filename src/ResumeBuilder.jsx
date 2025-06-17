@@ -8,23 +8,37 @@ import Personal from "./components/Personal";
 import Educations from "./components/Education";
 import Experiences from "./components/Experience";
 import Skills from "./components/Skills";
+import AIEnhancer from "./components/AIEnhancer";
+import AIModal from "./components/AIModal";
 
 function EditDetails({
   personalState,
   educationState,
   experienceState,
   skillsState,
+  setAIContent,
+  setAIModalOpen,
+  comments,
+  setComments,
 }) {
   return (
     <div className="edit-details">
       <ResetOptions
-        aboutMe={personalState[0].about}
-        skills={skillsState[0]}
-        experience={experienceState[0]}
         setPersonal={personalState[1]}
         setEducations={educationState[1]}
         setExperiences={experienceState[1]}
         setSkills={skillsState[1]}
+      />
+      <AIEnhancer
+        personal={personalState[0]}
+        education={educationState[0]}
+        experience={experienceState[0]}
+        skills={skillsState[0]}
+        comments={comments}
+        setComments={setComments}
+        setAIContent = {setAIContent}
+        setAIModalOpen = {setAIModalOpen}
+        loading={false}
       />
       <Personal personal={personalState[0]} setPersonal={personalState[1]} />
       <Educations
@@ -41,9 +55,6 @@ function EditDetails({
 }
 
 function ResetOptions({
-  aboutMe,
-  skills,
-  experience,
   setPersonal,
   setEducations,
   setExperiences,
@@ -109,17 +120,6 @@ function ResetOptions({
     setExperiences(exampleExperiences);
     setSkills(exampleSkills);
   }
-
-  async function aiEnhance() {
-    const res = await fetch('/api/enhance', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ resume:{aboutMe, skills, experience}}),
-    });
-    const data = await res.json();
-    console.log(data);
-  }
-
   return (
     <div className="reset-options">
       <button className="clear" onClick={clearResume}>
@@ -130,9 +130,6 @@ function ResetOptions({
       </button>
       <button className="print" onClick={() => window.print()}>
         Print Resume
-      </button>
-      <button className="ai" onClick={aiEnhance}>
-        Enhance with AI
       </button>
     </div>
   );
@@ -185,14 +182,12 @@ function DisplayResume({ personal, educations, experiences, skills }) {
           )}
         </div>
       </div>
-      <div className="about-me">
-        {personal.about && (
-          <div className="about">
-            <div className="title">About Me</div>
-            <p>{personal.about}</p>
-          </div>
-        )}
-      </div>
+      {personal.about && (
+        <div className="about">
+          <div className="title">About Me</div>
+          <p>{personal.about}</p>
+        </div>
+      )}
       <div className="skills-education">
         <div className="skills-info">
           {skills && skills.length > 0 && (
@@ -203,7 +198,6 @@ function DisplayResume({ personal, educations, experiences, skills }) {
                   display: "flex",
                   flexWrap: "wrap",
                   gap: "0.7rem",
-                  marginTop: "1rem",
                 }}
               >
                 {skills.map((skill) => (
@@ -212,8 +206,6 @@ function DisplayResume({ personal, educations, experiences, skills }) {
                     style={{
                       background: "#eee",
                       color: "#222",
-                      padding: "0.4rem 0.8rem",
-                      borderRadius: "1rem",
                       listStyle: "none",
                     }}
                   >
@@ -277,6 +269,10 @@ function ResumeBuilder() {
     },
   ]);
   const [skills, setSkills] = useState(["JavaScript", "React", "CSS"]);
+  const [aiModalOpen, setAIModalOpen] = useState(false);
+  const [aiContent, setAIContent] = useState("");
+  const [comments, setComments] = useState("");
+
   return (
     <>
       <div className="header">MakeMyResume</div>
@@ -286,6 +282,10 @@ function ResumeBuilder() {
           educationState={[educations, setEducations]}
           experienceState={[experiences, setExperiences]}
           skillsState={[skills, setSkills]}
+          setAIContent={setAIContent}
+          setAIModalOpen={setAIModalOpen}
+          comments={comments}
+          setComments={setComments}
         />
         <DisplayResume
           personal={personal}
@@ -294,6 +294,7 @@ function ResumeBuilder() {
           skills={skills}
         />
       </div>
+      <AIModal open={aiModalOpen} onClose={() => setAIModalOpen(false)} content={aiContent} setPersonal={setPersonal} setEducations={setEducations} setExperiences={setExperiences} setSkills={setSkills} />
     </>
   );
 }

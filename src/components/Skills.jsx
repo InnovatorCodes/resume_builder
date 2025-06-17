@@ -42,11 +42,10 @@ function Skills({ skills, setSkills }) {
       >
         {skills.map((skill) => (
           <li
+            className="skill-item"
             key={skill}
             style={{
               background: "#eee",
-              padding: "0.4rem 0.8rem",
-              borderRadius: "1rem",
               display: "flex",
               alignItems: "center",
             }}
