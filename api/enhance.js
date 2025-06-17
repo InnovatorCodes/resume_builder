@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   }
 
   // Extract the resume object from the request body
-  const { resume } = req.body;
+  const { resume,comments } = req.body;
 
 
 
@@ -46,8 +46,8 @@ Ensure the tone is professional and concise.
 
 Return your response strictly as a JSON object with the exact same top-level keys as the input, containing the updated values. Do not change the structure in any way or form.
 The user may provide additional information for you to incorporate or fill into the missing fields of the sections.
-Leave out unrelated and unnecessary information from user comments.
-Modify education only if necessary when certain education data is missing in the resume JSON but the user has provided the information in additional information
+Leave out unrelated and unnecessary information from user comments. I have attached the user comments after the resume JSON with a demarkation of '--- USER COMMENTS ---'
+Modify education only if necessary when certain education data is missing in the resume JSON but the user has provided the information in additional comments
 Do NOT include any explanations, markdown code blocks, or formatting outside of the JSON structure itself.
 Examples of sections:
 "personal": {
@@ -74,13 +74,17 @@ Examples of sections:
 ]
 
 Here is the user's resume JSON to improve:
+${JSON.stringify(resume, null, 2)}
+
+--- USER COMMENTS ---
+${comments || "None"}
 `;
 
   try {
     // Send the prompt to the Gemini API
     // We combine the system prompt with the user's resume data in a single 'user' message part
     const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt + JSON.stringify(resume, null, 2) }] }],
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.7, // A bit higher temperature can encourage more creative improvements
         maxOutputTokens: 2000, // Adjust based on expected output size, 800 might be too small for a full resume
