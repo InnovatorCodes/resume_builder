@@ -1,60 +1,66 @@
-# AI-Powered Resume Builder
+# Resume Builder with AI Enhancement
+
+---
+
+## Live Demo
+
+Experience the app live: [makemyresume.vercel.app](https://makemyresume.vercel.app/)
 
 ---
 
 ## Overview
 
-Welcome to the **AI-Powered Resume Builder**! This application helps you craft professional and impactful resumes with the assistance of Artificial Intelligence. Built using **React** with **Vite** for a fast and modern frontend, it leverages **Vercel Serverless Functions** to integrate with the **Google Gemini API**, providing intelligent content suggestions and improvements for your resume sections.
-
-Beyond just a static builder, this tool aims to elevate your resume by offering real-time, AI-driven advice on language, clarity, and impact, helping you stand out to recruiters and Applicant Tracking Systems (ATS).
+The Resume Builder is a modern web application designed to help users create professional and impactful resumes with ease. It provides a user-friendly interface for inputting personal details, education, experience, and skills. A key feature of this builder is its integration with the Google Gemini AI, which offers intelligent suggestions to enhance the quality and impact of the resume content, helping users stand out to potential employers.
 
 ## Features
 
-* **Interactive Resume Editing:** Easily input and manage all standard resume sections (personal details, education, experience, skills, etc.).
-* **AI Content Improvement:** Get intelligent suggestions for enhancing your resume's language, clarity, and impact, powered by the Google Gemini API.
-* **Dynamic UI:** A responsive and intuitive user interface built with React.
-* **Serverless Architecture:** Utilizes Vercel Serverless Functions for efficient and scalable API interactions.
-* **Print Functionality:** Generate a print-ready version of your resume directly from the app.
-* **Clear/Load Options:** Reset your resume or load a default example to get started quickly.
+* **Intuitive User Interface:** Easily input and manage all sections of your resume.
+* **Real-time Preview:** See your resume take shape instantly as you type.
+* **AI-Powered Content Improvement:** Leverage the Google Gemini API to get suggestions for:
+    * Rewriting bullet points for stronger impact.
+    * Improving clarity and conciseness of descriptions.
+    * Optimizing language for professionalism.
+* **Print-Ready Format:** Generate a clean, printable version of your resume.
+* **Local Storage Persistence:** Your resume data is saved locally in your browser, so you can continue editing even after closing the tab.
+* **Load Example Data:** Quickly populate the builder with sample data to get started or see a reference.
+* **Clear All Data:** Reset the builder to an empty state.
 
 ## Technologies Used
 
-### Frontend
+* **Frontend:**
+    * **React:** A declarative, component-based JavaScript library for building user interfaces.
+    * **Vite:** A fast build tool that significantly improves the frontend development experience.
+    * **CSS:** For custom styling and responsive design.
+* **Backend (Serverless Function):**
+    * **Node.js:** JavaScript runtime environment.
+    * **Vercel Serverless Functions:** For hosting the backend logic that interacts with the AI.
+* **AI Integration:**
+    * **Google Gemini API (`gemini-1.5-flash`):** Used for intelligent content generation and improvement.
+* **Deployment:**
+    * **Vercel:** Platform for static sites and serverless functions, enabling seamless continuous deployment.
 
-* **React:** A JavaScript library for building user interfaces.
-* **Vite:** A fast build tool that provides a lightning-fast development experience for React applications.
-* **CSS:** For styling the application, including media queries for responsiveness and print styles.
+## AI Integration Details
 
-### Backend (Serverless Function)
-
-* **Node.js:** JavaScript runtime environment.
-* **Vercel Serverless Functions:** Platform to deploy server-side logic without managing servers.
-* **Google Gemini API:** Utilized for AI-powered content generation and improvement (specifically `gemini-1.5-flash` or `gemini-2.0-flash` for optimal performance within the free tier).
-* **`@google/generative-ai`:** Official Node.js client library for interacting with the Gemini API.
+The application utilizes a Vercel Serverless Function to securely communicate with the Google Gemini API. When a user requests AI assistance (e.g., to improve a section), the serverless function sends the resume content (or a specific section) to the `gemini-1.5-flash` model. The model then processes the request based on carefully crafted prompts, offering improved, more impactful, and professional wording, which is then sent back to the client and presented to the user. This ensures sensitive API keys are never exposed on the client-side.
 
 ## Getting Started
 
-Follow these instructions to set up and run the project locally, and deploy it to Vercel.
-
----
+Follow these steps to set up and run the Resume Builder locally on your machine.
 
 ### Prerequisites
 
-* **Node.js:** Ensure you have Node.js (v18 or later recommended) installed. You can download it from [nodejs.org](https://nodejs.org/).
-* **Google Gemini API Key:** Obtain an API key from [Google AI Studio](https://aistudio.google.com/). This key will be used by your serverless function.
-* **Vercel CLI:** Install the Vercel command-line interface globally:
+* **Node.js:** Ensure you have Node.js (v18 or higher recommended) installed. You can download it from [nodejs.org](https://nodejs.org/).
+* **Vercel CLI:** For local development and testing of serverless functions:
     ```bash
     npm install -g vercel
     ```
 
----
-
-### Installation (Local)
+### Installation
 
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/InnovatorCodes/resume_builder.git
+    git clone [https://github.com/InnovatorCodes/resume_builder.git](https://github.com/InnovatorCodes/resume_builder.git)
     ```
 
 2.  **Navigate into the project directory:**
@@ -63,39 +69,30 @@ Follow these instructions to set up and run the project locally, and deploy it t
     cd resume_builder
     ```
 
-3.  **Install frontend and backend (serverless function) dependencies:**
+3.  **Install dependencies:**
 
     ```bash
     npm install
     ```
 
-4.  **Create a `.env` file in the project root:**
+### Environment Variables
 
-    ```
-    touch .env
-    ```
+To connect to the Google Gemini API, you need an API key.
 
-5.  **Add your Gemini API key to the `.env` file:**
-
-    ```
-    GEMINI_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY_HERE
-    ```
-    Replace `YOUR_GOOGLE_GEMINI_API_KEY_HERE` with your actual API key.
-
----
-
-### Running the Application (Local Development)
-
-To run the React app and simulate the Vercel serverless environment locally:
-
-1.  **Start the development server using Vercel CLI:**
-
-    ```bash
-    vercel dev
-    ```
-
-2.  **Open your browser:**
-
-    Visit `http://localhost:3000` (or the port indicated by `vercel dev`) to access the AI-Powered Resume Builder. The AI features will be fully functional, communicating with your local serverless function.
-
----
+1.  **Get a Gemini API Key:**
+    * Go to [Google AI Studio](https://aistudio.google.com/).
+    * Log in with your Google account.
+    * Generate a new API key.
+2.  **Create a `.env` file:**
+    * In the root of your project directory, create a file named `.env`.
+    * Add your Gemini API key to this file:
+        ```
+        GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+        ```
+        Replace `YOUR_GEMINI_API_KEY_HERE` with the actual key you obtained.
+3.  **Configure on Vercel:**
+    * For your deployed app to work, you **must** also add this environment variable in your Vercel project settings:
+        * Go to your **Vercel Dashboard**.
+        * Select your **Project**.
+        * Go to **Settings > Environment Variables**.
+        * Add `GEMINI_API_KEY` with its value for the relevant environments (e.g., "Production", "Preview", "Development").
